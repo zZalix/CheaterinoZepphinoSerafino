@@ -4,62 +4,24 @@
     <meta charset="UTF-8">
     <title>SISTEMA CRITTOGRAFICO ZEPH</title>
     <style>
-        body, html { 
-            margin: 0; padding: 0; height: 100vh; width: 100vw; 
-            overflow: hidden; background: #000; 
-            font-family: 'Courier New', Courier, monospace; 
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; 
-            color: #0f0; cursor: crosshair;
-        }
-
-        .full-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background-color: #000;
-        }
-
-        .tempio-base {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://i.ibb.co/3d53m3b/zeph-tempio-matrix.png');
-            background-size: cover; background-position: center;
-            filter: blur(8px) brightness(0.15) grayscale(0.5);
-        }
-
-        #hacker-console {
-            position: fixed; top: 20px; left: 20px; width: 350px;
-            font-size: 0.8rem; color: #0f0; z-index: 5;
-            text-shadow: 0 0 5px #0f0; pointer-events: none;
-        }
-
+        body, html { margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden; background: #000; font-family: 'Courier New', Courier, monospace; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #0f0; cursor: crosshair; user-select: none; }
+        .full-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-color: #000; }
+        .tempio-base { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://i.ibb.co/3d53m3b/zeph-tempio-matrix.png'); background-size: cover; background-position: center; filter: blur(8px) brightness(0.15) grayscale(0.5); }
+        #hacker-console { position: fixed; top: 20px; left: 20px; width: 350px; font-size: 0.8rem; color: #0f0; z-index: 5; text-shadow: 0 0 5px #0f0; pointer-events: none; }
         .console-line { margin-bottom: 5px; opacity: 0; transform: translateX(-10px); transition: 0.5s; }
-
         #zone-left { position: fixed; top: 0; left: 0; width: 250px; height: 250px; z-index: 999; }
         #zone-right { position: fixed; top: 0; right: 0; width: 250px; height: 250px; z-index: 999; }
-
-        #flash {
-            position: fixed; top: 0; width: 400px; height: 400px;
-            z-index: 998; pointer-events: none; opacity: 0; transition: opacity 0.1s;
-        }
-
-        .pixel-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
-            background-image: linear-gradient(rgba(0,255,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,0,0.1) 1px, transparent 1px);
-            background-size: 4px 4px; pointer-events: none;
-        }
-
-        .login-box {
-            z-index: 10; background: rgba(0,0,0,0.95); padding: 40px; border: 1px solid #111; text-align: center;
-            box-shadow: 0 0 60px rgba(0,0,0,1); border-radius: 2px; width: 420px;
-        }
-
+        #flash { position: fixed; top: 0; width: 400px; height: 400px; z-index: 998; pointer-events: none; opacity: 0; transition: opacity 0.1s; }
+        .pixel-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; background-image: linear-gradient(rgba(0,255,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,0,0.1) 1px, transparent 1px); background-size: 4px 4px; pointer-events: none; }
+        .login-box { z-index: 10; background: rgba(0,0,0,0.95); padding: 40px; border: 1px solid #111; text-align: center; box-shadow: 0 0 60px rgba(0,0,0,1); border-radius: 2px; width: 420px; }
         input { background: #050505; border: 1px solid #1a1a1a; color: #0f0; padding: 12px; margin: 20px auto; width: 85%; font-family: monospace; text-align: center; font-size: 1.1rem; outline: none; }
-        button { background: #0a0a0a; color: #1a1a1a; border: 1px solid #111; padding: 12px 25px; text-transform: uppercase; letter-spacing: 3px; width: 100%; cursor: pointer; }
-        #timer { margin-top: 25px; font-size: 3.2rem; color: #ffcc00; font-weight: bold; text-shadow: 0 0 20px rgba(255, 204, 0, 0.3); }
-        .hint-text { color: #222; font-size: 0.7rem; margin-top: 35px; letter-spacing: 1px; line-height: 1.4; }
-        .enigma-str { color: #ffcc00; font-size: 1.4rem; letter-spacing: 8px; margin-top: 10px; font-weight: bold; opacity: 0.3; }
+        button { background: #0a0a0a; color: #0f0; border: 1px solid #111; padding: 12px 25px; text-transform: uppercase; letter-spacing: 3px; width: 100%; cursor: pointer; }
+        #timer { margin-top: 25px; font-size: 3.2rem; color: #ffcc00; font-weight: bold; }
+        .hint-text { color: #333; font-size: 0.75rem; margin-top: 20px; letter-spacing: 1px; line-height: 1.4; font-weight: bold; }
+        .sub-hint { color: #1a1a1a; font-size: 0.8rem; margin-top: 10px; letter-spacing: 3px; }
     </style>
 </head>
-<body oncontextmenu="return false;"> 
+<body oncontextmenu="return false;" onkeydown="return (event.keyCode != 123 && !event.ctrlKey && !event.metaKey)"> 
 
     <div id="hacker-console"></div>
     <div id="zone-left"></div>
@@ -71,56 +33,85 @@
 
     <div class="login-box">
         <h2 style="color: #fff; margin: 0; letter-spacing: 5px;">SISTEMA CRITICO</h2>
-        <input type="text" id="main-input" placeholder="********" autocomplete="off">
+        <input type="password" id="main-input" placeholder="********" autocomplete="off">
         <button id="decript-btn">DECRIPT</button>
         <div id="timer">24:00:00</div>
-        <div class="hint-text">"3 passi avanti, 5 passi indietro.<br>Solo chi resta in equilibrio trova la porta."</div>
-        <div class="enigma-str">65gr0g2DZ6u</div>
+        <div class="hint-text">
+            3 passi avanti, 5 passi indietro.<br>
+            Solo chi resta in equilibrio trova la porta.
+        </div>
+        <div class="sub-hint">65gr0g2DZ6u</div>
     </div>
 
     <script>
         (function() {
-            const _0x = a => a.map(c => String.fromCharCode(c)).join('');
-            const _s = _0x([90, 51, 80, 104, 95, 99, 104, 101, 97, 116]);
-            const _t = _0x([119, 105, 102, 105, 101, 115]);
-            const _r = _0x([100, 81, 119, 52, 119, 57, 87, 103, 88, 99, 81]);
-            const _z = _0x([54, 53, 105, 116, 48, 105, 50, 70, 98, 54, 119]);
-            const _y = _0x([104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 121, 111, 117, 116, 117, 98, 101, 46, 99, 111, 109, 47, 119, 97, 116, 99, 104, 63, 118, 61]);
-
-            let _m = "";
-            let _c = "";
-
-            function lockFS() {
-                if (!document.fullscreenElement) {
-                    let el = document.documentElement;
-                    let f = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
-                    if(f) f.call(el).catch(()=>{});
+            document.addEventListener('keydown', function(e) {
+                // Blocca F12, Ctrl+S, Ctrl+U, Ctrl+Shift+I, Ctrl+Shift+J
+                if (e.keyCode == 123 || 
+                    (e.ctrlKey && (e.keyCode == 83 || e.keyCode == 85 || (e.shiftKey && (e.keyCode == 73 || e.keyCode == 74))))) {
+                    e.preventDefault();
+                    return false;
                 }
+            });
+
+            let _m = ""; 
+            let _c = ""; 
+            
+            const _p1 = "dQw4";
+            const _p2 = "w9Wg";
+            const _p3 = "XcQ";
+            const _pFull = _p1 + _p2 + _p3;
+
+            const check = () => {
+                const val = document.getElementById('main-input').value;
+                const _k = ["w", "i", "f", "i", "e", "s"].join("");
+                if (val.toLowerCase() === _k) {
+                    window.location.replace("about:blank");
+                }
+            };
+            document.getElementById('decript-btn').addEventListener('click', check);
+
+            function tf(side) {
+                const f = document.getElementById('flash');
+                f.style.left = side === 'left' ? '0' : 'auto';
+                f.style.right = side === 'right' ? '0' : 'auto';
+                f.style.background = side === 'left' ? 'radial-gradient(circle at top left, rgba(255,0,0,0.4) 0%, transparent 70%)' : 'radial-gradient(circle at top right, rgba(0,255,0,0.4) 0%, transparent 70%)';
+                f.style.opacity = "1";
+                setTimeout(() => f.style.opacity = "0", 150);
             }
 
-            document.addEventListener('click', lockFS);
-            document.addEventListener('keydown', (e) => {
-                lockFS();
-                if (e.keyCode === 123 || ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'u' || e.key === 'r'))) e.preventDefault();
-                if (e.key === "Enter") check();
+            document.getElementById('zone-left').addEventListener('mousedown', () => { _m = "L"; _c = ""; tf('left'); });
+            document.getElementById('zone-right').addEventListener('mousedown', () => { _m = "R"; _c = ""; tf('right'); });
 
-                if (_m !== "" && e.key.length === 1) { 
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Enter") check();
+                if (_m !== "" && e.key.length === 1) {
                     _c += e.key;
-                    if (_c.length > _s.length) _c = _c.substring(_c.length - _s.length);
-                    if (_c === _s) {
-                        window.location.href = _y + (_m === "z" ? _z : _r);
+                    // Protezione stringhe tramite ASCII
+                    const _s1 = String.fromCharCode(90, 101, 112, 104);
+                    const _s2 = String.fromCharCode(90, 51, 80, 104, 95, 99, 104, 101, 97, 116);
+                    const _yt = "https://youtu.be/";
+
+                    if (_m === "L" && _c.endsWith(_s1)) {
+                        window.location.href = _yt + _pFull;
+                    } else if (_m === "R" && _c.endsWith(_s2)) {
+                        window.location.href = _yt + "65it0i2Fb6w";
                     }
                 }
             });
 
-            const phrases = [
-                "> Initializing protocol... d", "> Overriding security... Q", "> Accessing root... w", "> Decrypting sector 4",
-                "> Bypassing firewall... w", "> Logic gate 9", "> System backup... W", "> Extracting data... g",
-                "> Tracking signal... X", "> Loading kernel... c", "> Redirecting... Q"
+            const cb = document.getElementById('hacker-console');
+            const lines = [
+                "> [SECURE_MODE]: ENABLED",
+                "> [DEV_BLOCK]: ACTIVE",
+                "> Syncing... [" + _p1 + "]",
+                "> Analyzing... [" + _p2 + "]",
+                "> Root access... [" + _p3 + "]",
+                "> Protocol: ZEPH_GATE",
+                "> Waiting for biological auth..."
             ];
 
-            const cb = document.getElementById('hacker-console');
-            phrases.forEach((t, i) => {
+            lines.forEach((t, i) => {
                 setTimeout(() => {
                     const l = document.createElement('div');
                     l.className = 'console-line';
@@ -128,32 +119,12 @@
                     l.style.opacity = "1";
                     l.style.transform = "translateX(0)";
                     cb.appendChild(l);
-                }, i * 600);
+                }, i * 800);
             });
-
-            function tf(s) {
-                const f = document.getElementById('flash');
-                f.style.left = s === 'left' ? '0' : 'auto';
-                f.style.right = s === 'right' ? '0' : 'auto';
-                f.style.background = s === 'left' ? 'radial-gradient(circle at top left, rgba(255,0,0,0.5) 0%, transparent 70%)' : 'radial-gradient(circle at top right, rgba(0,255,0,0.5) 0%, transparent 70%)';
-                f.style.opacity = "1";
-                setTimeout(() => { f.style.opacity = "0"; }, 300);
-            }
-
-            document.getElementById('zone-left').addEventListener('mousedown', () => { _m = "r"; _c = ""; tf('left'); });
-            document.getElementById('zone-right').addEventListener('mousedown', () => { _m = "z"; _c = ""; tf('right'); });
-
-            const check = () => {
-                if (document.getElementById('main-input').value === _t) {
-                    window.location.replace("about:blank");
-                }
-            };
-
-            document.getElementById('decript-btn').addEventListener('click', check);
 
             let tl = 86400;
             setInterval(() => {
-                if(tl > 0) tl--;
+                tl--;
                 let h = Math.floor(tl/3600).toString().padStart(2,'0'), m = Math.floor((tl%3600)/60).toString().padStart(2,'0'), s = (tl%60).toString().padStart(2,'0');
                 document.getElementById('timer').innerText = `${h}:${m}:${s}`;
             }, 1000);
